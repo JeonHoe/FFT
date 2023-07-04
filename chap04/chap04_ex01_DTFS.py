@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pylab as plt
-from chap04.chap04_module import *
+from chap04_module import *
 
 xn = [0,1,2,3]; print("x(n)=",xn)
 N = len(xn)
