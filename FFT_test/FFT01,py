@@ -1,0 +1,89 @@
+import numpy as np
+import matplotlib.pylab as plt
+from test_module import *
+
+# 예시 이산시간 비주기신호 x[n]
+xn=[0,1,2,3]; N=len(xn); print("xn=",xn)
+
+# x[n]의 이산 푸리에 변환
+Xk=DFT(xn,N); magXk=np.abs(Xk); print("Magnitude of Xk=",magXk)
+phaXk=np.angle(Xk,deg=True)
+
+# x[n]의 영역 확장 => x1[n]
+step=np.log2(N)
+if(step-int(step)!=0):
+    step=int(step)+1
+    N1=np.power(2,step)
+    x1n=np.zeros(N1)
+    x1n[0:N]=xn; print("x1[n]=",x1n)
+else : x1n=np.copy(xn); N1=N; step=int(step)
+
+# 영역 확장된 x[n]의 이산 푸리에 변환
+X1k=DFT(x1n,N1); magX1k=np.abs(X1k); print("Magnitude of X1k=",magX1k)
+phaX1k=np.angle(X1k,deg=True)
+
+# 회전인자 
+WN=np.exp(-1j*(2*np.pi/N1))
+k=np.arange(N1/2)
+WNk =np.power(WN,k)
+phaWNk=np.angle(WNk,deg=True)
+print("Phase of WNk=",phaWNk)
+
+# 영역 확장된 x[n]의 revers bit
+print("x1[n]=",x1n)
+xr1n=np.copy(x1n)
+for n in range(N1):
+    m=0
+    for j in range(step):
+        m=m|((n>>j)&1)<<(step-j-1)
+    if(n<m):
+        tmp=xr1n[n]
+        xr1n[n]=xr1n[m]
+        xr1n[m]=tmp
+print("xr1[n]=",xr1n)
+
+# 계수 계산
+Xkn=np.zeros(N1,dtype="complex64")+xr1n
+for loop in range(step):
+    regionSize=1<<(loop+1) # N=8:2->4->8
+    kjump=1<<(step-loop-1) # N=8:4->2->1
+    half=regionSize>>1   # N=8:1->2->4
+    for i in range(0,N1,regionSize):
+        blockEnd=i+half-1
+        k=0
+        for j in range(i,blockEnd+1):
+            T=WNk[k]*Xkn[j+half]
+            Xkn[j+half]=Xkn[j]-T
+            Xkn[j]=Xkn[j]+T
+            k+=kjump
+
+print("Magnitude of X1k(DFT)=",magX1k)
+magXkn=np.abs(Xkn); print("Magnitude of Xkn(FFT)=",magXkn)
+phaXkn=np.angle(Xkn,deg=True)
+
+plt.figure(1)
+n=np.arange(N)
+plt.subplot(3,1,1)
+plt.stem(n,xn,'b'); plt.title("x[n] & x[n] DFT"); plt.ylabel("x[n]"); plt.grid()
+plt.subplot(3,1,2)
+plt.stem(n,magXk,'b'); plt.ylabel("|X(k)|"); plt.grid()
+plt.subplot(3,1,3)
+plt.stem(n,phaXk,'b'); plt.ylabel("∠X(k)"); plt.xlabel("k"); plt.grid()
+
+plt.figure(2)
+n1=np.arange(N1)
+plt.subplot(3,1,1)
+plt.stem(n1,x1n,'b'); plt.title("x1[n] & x1[n] DFT"); plt.ylabel("x1[n]"); plt.grid()
+plt.subplot(3,1,2)
+plt.stem(n1,magX1k,'b'); plt.ylabel("|X1(k)|"); plt.grid()
+plt.subplot(3,1,3)
+plt.stem(n1,phaX1k,'b'); plt.ylabel("∠X1(k)"); plt.xlabel("k"); plt.grid()
+
+plt.figure(3)
+plt.subplot(3,1,1)
+plt.stem(n1,x1n,'b'); plt.title("x1[n] & x1[n] FFT"); plt.ylabel("x1[n]"); plt.grid()
+plt.subplot(3,1,2)
+plt.stem(n1,magXkn,'b'); plt.ylabel("|X1(k)|"); plt.grid()
+plt.subplot(3,1,3)
+plt.stem(n1,phaXkn,'b'); plt.ylabel("∠X1(k)"); plt.xlabel("k"); plt.grid()
+plt.show()
