@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pylab as plt
 from test_module import *
 
-xn=np.array([3,7,2,1]); N=len(xn); print("x[n]=",xn)
+xn=np.array([0,0,0,0,1,2,3,4,3,2,1,0,0,0,0,0]); N=len(xn); print("x[n]=",xn)
 n=np.arange(N)
 
 Xk=DFT(xn,N); magXk=np.abs(Xk); phaXk=np.angle(Xk,deg=True)
@@ -22,14 +22,14 @@ else : x1n=np.copy(xn); N1=N; step=int(step)
 Xk_DFT=DFT(x1n,N1); magXk_DFT=np.abs(Xk_DFT); phaXk_DFT=np.angle(Xk_DFT,deg=True)
 n1=np.arange(N1)
 print("|X(k)| of DFT=",magXk_DFT)
-print("∠X1(k) of DFT=",phaXk_DFT)
+#print("∠X1(k) of DFT=",phaXk_DFT)
 
 Xk=np.zeros(len(x1n),dtype="complex64")+x1n
 
 radix2(Xk)
 reverse_bit(Xk)
 print("|X(k)| of FFT(radix2)=",np.abs(Xk))
-print("∠X(k) of FFT(radix2)=",np.angle(Xk,deg=True))
+#print("∠X(k) of FFT(radix2)=",np.angle(Xk,deg=True))
 
 xrn_DFT=IDFT(Xk_DFT,N1)
 

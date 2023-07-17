@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pylab as plt
 from test_module import *
 
-xn=np.array([0,1,2,3,4,5,6,7]); N=len(xn); print("x[n]=",xn)
+xn=np.array([0,0,0,0,1,2,3,4,3,2,1,0,0,0,0,0]); N=len(xn); print("x[n]=",xn)
 n=np.arange(N)
 
 Xk=DFT(xn,N); magXk=np.abs(Xk); phaXk=np.angle(Xk,deg=True)
@@ -22,19 +22,22 @@ print("x1[n]=",x1n)
 Xk_DFT=DFT(x1n,N1); magXk_DFT=np.abs(Xk_DFT); phaXk_DFT=np.angle(Xk_DFT,deg=True)
 n1=np.arange(N1)
 print("|X(k)| of DFT=",magXk_DFT)
-print("∠X1(k) of DFT=",phaXk_DFT)
+#print("∠X1(k) of DFT=",phaXk_DFT)
 
 Xk=np.zeros(len(x1n),dtype="complex64")+x1n
 
 radix4(Xk)
-print("|X(k)| of FFT(radix2)=",np.abs(Xk))
-print("∠X(k) of FFT(radix2)=",np.angle(Xk,deg=True))
+Xk=sort_radix4(Xk)
+print("|X(k)| of FFT(radix4)=",np.abs(Xk))
+#print("∠X(k) of FFT(radix4)=",np.angle(Xk,deg=True))
 
 xrn_DFT=IDFT(Xk_DFT,N1)
 
 xrn=np.zeros(N1,dtype="complex64")+Xk
 
 i_radix4(xrn)
+xrn=sort_radix4(xrn)
+xrn=xrn/N1
 
 plt.figure(1); plt.stem(n,xn,'b'); plt.xlabel("n"); plt.ylabel("x[n]"); plt.title("Origin x[n]"); plt.grid()
 
@@ -46,5 +49,5 @@ plt.subplot(3,1,3); plt.stem(n1,xrn_DFT); plt.grid()
 plt.figure(3)
 plt.subplot(3,1,1); plt.stem(n1,x1n); plt.title("FFT & IFFT (radix4)"); plt.grid()
 plt.subplot(3,1,2); plt.stem(n1,np.abs(Xk)); plt.grid()
-plt.subplot(3,1,3); plt.stem(n1,xrn_DFT); plt.grid()
+plt.subplot(3,1,3); plt.stem(n1,xrn); plt.grid()
 plt.show()

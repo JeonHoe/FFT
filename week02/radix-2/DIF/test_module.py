@@ -51,7 +51,7 @@ def i_radix2(x):
         y[n]=x[n]+x[n+N1]
         z[n]=(x[n]-x[n+N1])*np.power(WN,n)
     
-    radix2(y); radix2(z)
+    i_radix2(y); i_radix2(z)
 
     for r in range(N1):
         x[r]=y[r]

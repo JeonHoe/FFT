@@ -77,7 +77,7 @@ def i_radix2(x):
         y[n]=x[n]+x[n+N1]
         z[n]=(x[n]-x[n+N1])*np.power(WN,n)
     
-    radix2(y); radix2(z)
+    i_radix2(y); i_radix2(z)
 
     for r in range(N1):
         x[r]=y[r]
@@ -86,7 +86,7 @@ def i_radix2(x):
 def i_radix4(x):
     N=len(x)
     if(N==1) : return
-    elif(N==2) : radix2(x)
+    elif(N==2) : i_radix2(x)
     else:
         N1=N>>2
         WN=np.exp(1j*2*np.pi/N)
@@ -97,11 +97,11 @@ def i_radix4(x):
 
         for n in range(N1):
             x0[n]=x[n]+x[n+N1]+x[n+N1*2]+x[n+N1*3]
-            x1[n]=(x[n]-1j*x[n+N1]-x[n+N1*2]+1j*x[n+N1*3])*np.power(WN,n)
+            x1[n]=(x[n]+1j*x[n+N1]-x[n+N1*2]-1j*x[n+N1*3])*np.power(WN,n)
             x2[n]=(x[n]-x[n+N1]+x[n+N1*2]-x[n+N1*3])*np.power(WN,2*n)
-            x3[n]=(x[n]+1j*x[n+N1]-x[n+N1*2]-1j*x[n+N1*3])*np.power(WN,3*n)
+            x3[n]=(x[n]-1j*x[n+N1]-x[n+N1*2]+1j*x[n+N1*3])*np.power(WN,3*n)
     
-        radix4(x0); radix4(x1); radix4(x2); radix4(x3)
+        i_radix4(x0); i_radix4(x1); i_radix4(x2); i_radix4(x3)
 
         for r in range(N1):
             x[r]=x0[r]
