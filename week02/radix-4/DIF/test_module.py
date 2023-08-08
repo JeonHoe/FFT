@@ -60,10 +60,10 @@ def radix4(x):
         radix4(x0); radix4(x1); radix4(x2); radix4(x3)
 
         for r in range(N1):
-            x[r]=x0[r]
-            x[r+N1]=x1[r]
-            x[r+N1*2]=x2[r]
-            x[r+N1*3]=x3[r]
+            x[4*r]=x0[r]
+            x[4*r+1]=x1[r]
+            x[4*r+2]=x2[r]
+            x[4*r+3]=x3[r]
     
 def i_radix2(x):
     N=len(x)
@@ -104,10 +104,10 @@ def i_radix4(x):
         i_radix4(x0); i_radix4(x1); i_radix4(x2); i_radix4(x3)
 
         for r in range(N1):
-            x[r]=x0[r]
-            x[r+N1]=x1[r]
-            x[r+N1*2]=x2[r]
-            x[r+N1*3]=x3[r]
+            x[4*r]=x0[r]
+            x[4*r+1]=x1[r]
+            x[4*r+2]=x2[r]
+            x[4*r+3]=x3[r]
     
 def reverse_bit(x):
     N=len(x)
@@ -122,13 +122,3 @@ def reverse_bit(x):
             tmp=x[n]
             x[n]=x[m]
             x[m]=tmp
-
-def sort_radix4(x):
-    N=len(x); N1=N>>2
-    y=np.zeros(N,dtype="complex64")
-    for r in range(N1):
-        y[4*r]=x[r]
-        y[4*r+1]=x[r+N1]
-        y[4*r+2]=x[r+N1*2]
-        y[4*r+3]=x[r+N1*3]
-    return y

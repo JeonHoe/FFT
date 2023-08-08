@@ -27,7 +27,6 @@ print("|X(k)| of DFT=",magXk_DFT)
 Xk=np.zeros(len(x1n),dtype="complex64")+x1n
 
 radix4(Xk)
-Xk=sort_radix4(Xk)
 print("|X(k)| of FFT(radix4)=",np.abs(Xk))
 #print("∠X(k) of FFT(radix4)=",np.angle(Xk,deg=True))
 
@@ -36,7 +35,6 @@ xrn_DFT=IDFT(Xk_DFT,N1)
 xrn=np.zeros(N1,dtype="complex64")+Xk
 
 i_radix4(xrn)
-xrn=sort_radix4(xrn)
 xrn=xrn/N1
 
 plt.figure(1); plt.stem(n,xn,'b'); plt.xlabel("n"); plt.ylabel("x[n]"); plt.title("Origin x[n]"); plt.grid()

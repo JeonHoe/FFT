@@ -2,11 +2,11 @@ import numpy as np
 import matplotlib.pylab as plt
 from test_module import *
 
-xn=np.array([0,0,1,1,1,1,0,0]); N=len(xn); print("x[n]=",xn)
+xn=np.arange(64); N=len(xn); print("x[n]=",xn)
 
 Xk=DFT(xn,N); magXk=np.abs(Xk); phaXk=np.angle(Xk,deg=True)
-print("|X(k)|=",magXk)
-print("∠X(k)=",phaXk)
+#print("|X(k)|=",magXk)
+#print("∠X(k)=",phaXk)
 
 step=np.log2(N)
 if(step-int(step)!=0):
@@ -19,14 +19,16 @@ else : x1n=np.copy(xn); N1=N; step=int(step)
 print("x1[n]=",x1n)
 
 Xk_DFT=DFT(x1n,N1); magXk_DFT=np.abs(Xk_DFT); phaXk_DFT=np.angle(Xk_DFT,deg=True)
+print("Xk = ",Xk_DFT)
 print("|X(k)| of DFT=",magXk_DFT)
 #print("∠X1(k) of DFT=",phaXk_DFT)
 
 Xk=np.zeros(len(x1n),dtype="complex64")+x1n
 
 radix4(Xk)
-Xk=sort_radix4(Xk)
+#sort_radix4(Xk)
 
+print("Xk = ",Xk)
 print("|X(k)| of FFT(radix4)=",np.abs(Xk))
 #print("∠X(k) of FFT(radix2)=",np.angle(Xk,deg=True))
 
